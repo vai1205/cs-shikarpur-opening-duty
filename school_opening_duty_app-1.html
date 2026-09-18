@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>School Opening Duty</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f3f4f6;color:#111827}
+.wrap{max-width:620px;margin:auto;padding:18px 14px 28px}
+.card{background:white;border-radius:22px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.08);margin-bottom:14px}
+h1{font-size:24px;margin:0 0 4px} .muted{color:#6b7280;font-size:14px}
+.today{text-align:center;padding:26px 18px;background:#111827;color:white}
+.today .label{font-size:14px;opacity:.8} .today h2{font-size:32px;margin:8px 0}
+.names{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:18px 0 6px}
+.name{background:#fff;padding:11px 15px;border-radius:13px;color:#111827;font-weight:750;font-size:17px}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#e5e7eb;color:#374151;font-size:13px;font-weight:700}
+.notice{padding:12px 14px;border-radius:13px;background:#fef3c7;color:#92400e;font-size:14px}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.row:last-child{border-bottom:0} .day{font-weight:750} .staff{text-align:right;font-size:14px;color:#374151}
+input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:12px;font-size:16px;margin-top:7px}
+button{width:100%;border:0;border-radius:12px;padding:12px;margin-top:10px;font-size:15px;font-weight:700;background:#111827;color:white}
+.small{font-size:12px;color:#6b7280;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>🏫 School Opening Duty</h1>
+    <div class="muted">Link खोलते ही आज की duty दिखाई देगी</div>
+  </div>
+
+  <div class="card today">
+    <div class="label" id="date"></div>
+    <h2 id="day"></h2>
+    <div id="week" class="badge"></div>
+    <div class="names" id="todayNames"></div>
+    <div id="count"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">आज की duty</h3>
+    <div id="todayMessage"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">इस सप्ताह का पूरा roster</h3>
+    <div id="weekRoster"></div>
+  </div>
+
+  <div class="card">
+    <button onclick="toggleExplain()" style="margin-top:0">ℹ️ यह रोस्टर Fair और Random कैसे है?</button>
+    <div id="explainer" style="display:none;margin-top:14px">
+      <div class="notice" style="background:#eef2ff;color:#3730a3">
+        <b>सरल तरीके से समझें:</b><br><br>
+        • हर सप्ताह 8 teachers की कुल <b>16 duties</b> होती हैं — यानी हर teacher की <b>2 duties</b>।<br><br>
+        • 6 school-days में 4 दिन <b>3 staff</b> और 2 दिन <b>2 staff</b> की duty होती है।<br><br>
+        • किसी को हमेशा 2-staff या हमेशा 3-staff duty न मिले, इसलिए duty groups को हर week rotate किया गया है।<br><br>
+        • पूरे <b>8-week cycle</b> में हर teacher को <b>4 बार 2-staff</b> और <b>12 बार 3-staff</b> duty मिलती है।<br><br>
+        • Monday से Saturday तक भी duties को rotate किया गया है, ताकि किसी एक teacher की हमेशा एक ही दिन duty न रहे।<br><br>
+        • “Random” का मतलब यह नहीं कि app हर बार नया random result बनाती है। <b>Random/rotation पहले से तय और locked है</b>, ताकि सभी teachers के मोबाइल में एक ही result आए और बाद में कोई बदलाव न हो।<br><br>
+        • Week की पहचान किसी database से नहीं होती। सभी phones में एक ही <b>Week 1 starting date</b> रखी गई है और app आज की तारीख से खुद Week 1–8 calculate करती है।
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">⚙️ Setup</h3>
+    <div class="small">Week 1 जिस सोमवार से शुरू हुआ था, वह तारीख चुनें। Default तारीख 14 Sep 2026 रखी गई है; जरूरत हो तो बदल दें।</div>
+    <label style="display:block;margin-top:12px;font-weight:700">Week 1 Start (Monday)</label>
+    <input type="date" id="startDate">
+    <button onclick="saveStart()">Save & Refresh</button>
+  </div>
+
+  <div class="card small">
+    <b>कैसे काम करेगा?</b><br>
+    App current date से automatically Week 1–8 calculate करेगा। Week 8 के बाद फिर Week 1 शुरू होगा।
+    Internet की जरूरत नहीं है; यह single HTML file है।
+  </div>
+</div>
+
+<script>
+const roster = {"1": {"Monday": ["S.A.", "S.S.", "A.K.M."], "Tuesday": ["DY", "A.S.Y.", "V.S."], "Wednesday": ["A.K.", "K.K.K."], "Thursday": ["S.A.", "DY", "A.K."], "Friday": ["S.S.", "A.S.Y.", "K.K.K."], "Saturday": ["A.K.M.", "V.S."]}, "2": {"Monday": ["S.S.", "A.K.M.", "DY"], "Tuesday": ["A.S.Y.", "V.S.", "A.K."], "Wednesday": ["K.K.K.", "S.A."], "Thursday": ["S.S.", "A.S.Y.", "K.K.K."], "Friday": ["A.K.M.", "V.S.", "S.A."], "Saturday": ["DY", "A.K."]}, "3": {"Monday": ["A.K.M.", "DY", "A.S.Y."], "Tuesday": ["V.S.", "A.K.", "K.K.K."], "Wednesday": ["S.A.", "S.S."], "Thursday": ["A.K.M.", "V.S.", "S.A."], "Friday": ["DY", "A.K.", "S.S."], "Saturday": ["A.S.Y.", "K.K.K."]}, "4": {"Monday": ["DY", "A.S.Y.", "V.S."], "Tuesday": ["A.K.", "K.K.K.", "S.A."], "Wednesday": ["S.S.", "A.K.M."], "Thursday": ["DY", "A.K.", "S.S."], "Friday": ["A.S.Y.", "K.K.K.", "A.K.M."], "Saturday": ["V.S.", "S.A."]}, "5": {"Monday": ["A.S.Y.", "V.S.", "A.K."], "Tuesday": ["K.K.K.", "S.A.", "S.S."], "Wednesday": ["A.K.M.", "DY"], "Thursday": ["A.S.Y.", "K.K.K.", "A.K.M."], "Friday": ["V.S.", "S.A.", "DY"], "Saturday": ["A.K.", "S.S."]}, "6": {"Monday": ["V.S.", "A.K.", "K.K.K."], "Tuesday": ["S.A.", "S.S.", "A.K.M."], "Wednesday": ["DY", "A.S.Y."], "Thursday": ["V.S.", "S.A.", "DY"], "Friday": ["A.K.", "S.S.", "A.S.Y."], "Saturday": ["K.K.K.", "A.K.M."]}, "7": {"Monday": ["A.K.", "K.K.K.", "S.A."], "Tuesday": ["S.S.", "A.K.M.", "DY"], "Wednesday": ["A.S.Y.", "V.S."], "Thursday": ["A.K.", "S.S.", "A.S.Y."], "Friday": ["K.K.K.", "A.K.M.", "V.S."], "Saturday": ["S.A.", "DY"]}, "8": {"Monday": ["K.K.K.", "S.A.", "S.S."], "Tuesday": ["A.K.M.", "DY", "A.S.Y."], "Wednesday": ["V.S.", "A.K."], "Thursday": ["K.K.K.", "A.K.M.", "V.S."], "Friday": ["S.A.", "DY", "A.K."], "Saturday": ["S.S.", "A.S.Y."]}};
+const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const hiDays = {Monday:"सोमवार",Tuesday:"मंगलवार",Wednesday:"बुधवार",Thursday:"गुरुवार",Friday:"शुक्रवार",Saturday:"शनिवार"};
+
+function localDateOnly(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+function dateFromInput(s) {
+  const [y,m,d] = s.split("-").map(Number);
+  return new Date(y,m-1,d);
+}
+function iso(d) {
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function mondayOf(d) {
+  const x = localDateOnly(d);
+  const n = x.getDay(); // Sun 0
+  const diff = n === 0 ? -6 : 1-n;
+  x.setDate(x.getDate()+diff);
+  return x;
+}
+function getStart() {
+  return dateFromInput(localStorage.getItem("dutyStart") || "2026-09-14");
+}
+function toggleExplain() {
+  const el = document.getElementById("explainer");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+function calculate() {
+  const now = new Date();
+  const today = localDateOnly(now);
+  const start = getStart();
+  const diffDays = Math.floor((today-start)/86400000);
+  let week = Math.floor(diffDays/7)+1;
+  if (week < 1) week = 1;
+  week = ((week-1)%8)+1;
+
+  const dayIndex = today.getDay();
+  const dayName = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayIndex];
+
+  document.getElementById("date").textContent = today.toLocaleDateString("hi-IN",{day:"numeric",month:"long",year:"numeric"});
+  document.getElementById("day").textContent = dayName === "Sunday" ? "रविवार" : hiDays[dayName];
+  document.getElementById("week").textContent = "Week " + week;
+
+  if (roster[week][dayName]) {
+    const names = roster[week][dayName];
+    document.getElementById("todayNames").innerHTML = names.map(n=>`<div class="name">${n}</div>`).join("");
+    document.getElementById("count").textContent = names.length + " staff की opening duty";
+    document.getElementById("todayMessage").innerHTML = `<div class="notice">आज duty पर: <b>${names.join(", ")}</b><br>कुल ${names.length} staff — कृपया समय से पहले विद्यालय पहुँचें।</div>`;
+  } else {
+    document.getElementById("todayNames").innerHTML = '<div class="name">आज opening duty नहीं</div>';
+    document.getElementById("count").textContent = "Sunday";
+    document.getElementById("todayMessage").innerHTML = '<div class="notice">आज रविवार है। School opening roster Monday–Saturday के लिए है।</div>';
+  }
+
+  const weekStart = new Date(start); weekStart.setDate(start.getDate() + (week-1)*7);
+  let rows = "";
+  days.forEach((dn,i)=>{
+    const arr = roster[week][dn];
+    rows += `<div class="row"><div><div class="day">${hiDays[dn]}</div><div class="small">${arr.length} staff</div></div><div class="staff">${arr.join(" · ")}</div></div>`;
+  });
+  document.getElementById("weekRoster").innerHTML = rows;
+  document.getElementById("startDate").value = iso(start);
+}
+function saveStart() {
+  const v = document.getElementById("startDate").value;
+  if (!v) return;
+  localStorage.setItem("dutyStart", v);
+  calculate();
+}
+calculate();
+</script>
+</body>
+</html>
