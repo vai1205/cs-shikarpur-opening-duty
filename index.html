@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
+
 <title>CS SHIKARPUR — Opening Duty</title>
 
 <style>
@@ -13,8 +14,8 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
   background: #f3f4f6;
   color: #111827;
 }
@@ -46,6 +47,15 @@ h3 {
   color: #6b7280;
   font-size: 14px;
 }
+
+.school-name {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+/* Today's Duty */
 
 .today {
   text-align: center;
@@ -91,21 +101,95 @@ h3 {
   font-weight: 700;
 }
 
+/* Teacher tooltip */
+
+.teacher-chip {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.teacher-chip .tooltip {
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+
+  transform: translateX(-50%) translateY(4px);
+
+  background: #111827;
+  color: #fff;
+
+  padding: 8px 11px;
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+
+  white-space: nowrap;
+
+  z-index: 20;
+  pointer-events: none;
+
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.18);
+}
+
+.teacher-chip .tooltip::after {
+  content: "";
+
+  position: absolute;
+  top: 100%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border: 6px solid transparent;
+  border-top-color: #111827;
+}
+
+.teacher-chip:hover .tooltip,
+.teacher-chip:focus .tooltip {
+  visibility: visible;
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+/* Notice */
+
 .notice {
   padding: 12px 14px;
   border-radius: 13px;
+
   background: #fef3c7;
   color: #92400e;
+
   font-size: 14px;
   line-height: 1.6;
 }
 
+/* Weekly roster */
+
 .row {
   display: flex;
+
   justify-content: space-between;
+
   gap: 12px;
+
   align-items: center;
+
   padding: 12px 0;
+
   border-bottom: 1px solid #eee;
 }
 
@@ -118,40 +202,38 @@ h3 {
 }
 
 .staff {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+
+  gap: 6px;
+
   text-align: right;
+
   font-size: 14px;
+
   color: #374151;
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  font-size: 16px;
-  margin-top: 7px;
+.staff .teacher-chip {
+  background: #f3f4f6;
+
+  padding: 5px 8px;
+
+  border-radius: 8px;
+
+  font-weight: 650;
 }
 
-button {
-  width: 100%;
-  border: 0;
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  background: #111827;
-  color: white;
-  cursor: pointer;
-}
-
-button:active {
-  transform: scale(0.98);
-}
+/* Explainer */
 
 .explainer-button {
   background: #eef2ff;
   color: #3730a3;
+
+  margin-top: 0;
 }
 
 .explainer {
@@ -159,35 +241,86 @@ button:active {
   margin-top: 14px;
 }
 
+/* Buttons */
+
+button {
+  width: 100%;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  padding: 12px;
+
+  margin-top: 10px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Small text */
+
 .small {
   font-size: 12px;
+
   color: #6b7280;
+
   line-height: 1.5;
 }
 
-.school-name {
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #6b7280;
-}
+/* Footer */
 
 .footer {
   text-align: center;
+
   font-size: 12px;
+
   color: #9ca3af;
+
   padding: 8px;
+}
+
+
+/* Mobile tooltip */
+
+@media (max-width: 480px) {
+
+  .teacher-chip .tooltip {
+
+    white-space: normal;
+
+    width: max-content;
+
+    max-width: 190px;
+
+    text-align: center;
+
+  }
+
 }
 </style>
 </head>
+
 
 <body>
 
 <div class="wrap">
 
+
   <!-- HEADER -->
+
   <div class="card">
-    <div class="school-name">CS SHIKARPUR</div>
+
+    <div class="school-name">
+      CS SHIKARPUR
+    </div>
 
     <h1 style="margin-top: 5px;">
       🏫 School Opening Duty
@@ -196,19 +329,30 @@ button:active {
     <div class="muted">
       आज किसकी Opening Duty है — तुरंत देखें
     </div>
+
   </div>
 
 
   <!-- TODAY'S DUTY -->
+
   <div class="card today">
 
-    <div class="label" id="date"></div>
+    <div
+      class="label"
+      id="date"
+    ></div>
 
     <h2 id="day"></h2>
 
-    <div id="week" class="badge"></div>
+    <div
+      id="week"
+      class="badge"
+    ></div>
 
-    <div class="names" id="todayNames"></div>
+    <div
+      class="names"
+      id="todayNames"
+    ></div>
 
     <div id="count"></div>
 
@@ -216,6 +360,7 @@ button:active {
 
 
   <!-- TODAY MESSAGE -->
+
   <div class="card">
 
     <h3 style="margin-top:0;">
@@ -228,6 +373,7 @@ button:active {
 
 
   <!-- WEEK ROSTER -->
+
   <div class="card">
 
     <h3 style="margin-top:0;">
@@ -240,36 +386,48 @@ button:active {
 
 
   <!-- EXPLAINER -->
+
   <div class="card">
 
     <button
       class="explainer-button"
       onclick="toggleExplain()"
-      style="margin-top:0;"
     >
       ℹ️ यह Roster Fair और Random कैसे है?
     </button>
 
-    <div id="explainer" class="explainer">
+
+    <div
+      id="explainer"
+      class="explainer"
+    >
 
       <div
         class="notice"
-        style="background:#eef2ff;color:#3730a3;"
+        style="
+          background:#eef2ff;
+          color:#3730a3;
+        "
       >
 
-        <b>सरल तरीके से समझें:</b>
+        <b>
+          सरल तरीके से समझें:
+        </b>
 
         <br><br>
 
-        • 8 teachers हैं और हर teacher की हर सप्ताह
-        <b>2 duties</b> हैं।
+
+        • 8 teachers हैं और हर teacher की
+        हर सप्ताह <b>2 duties</b> हैं।
 
         <br><br>
+
 
         • इसलिए हर सप्ताह कुल
         <b>16 opening duties</b> होती हैं।
 
         <br><br>
+
 
         • 6 school-days में
         <b>4 दिन 3 staff</b> और
@@ -277,46 +435,91 @@ button:active {
 
         <br><br>
 
-        • किसी teacher को हमेशा 2-staff या हमेशा
-        3-staff duty न मिले, इसलिए groups को
+
+        • किसी teacher को हमेशा 2-staff
+        या हमेशा 3-staff duty न मिले,
+        इसलिए duty groups को
         <b>हर week rotate</b> किया गया है।
 
         <br><br>
 
-        • पूरे <b>8-week cycle</b> में हर teacher को
+
+        • पूरे <b>8-week cycle</b> में
+        हर teacher को
         <b>4 बार 2-staff</b> और
         <b>12 बार 3-staff</b> duty मिलती है।
 
         <br><br>
 
-        • Monday से Saturday तक भी duties को
-        rotate किया गया है, ताकि किसी एक teacher की
-        हमेशा एक ही दिन duty न रहे।
+
+        • Monday से Saturday तक भी duties
+        को rotate किया गया है, ताकि किसी
+        एक teacher की हमेशा एक ही दिन
+        duty न रहे।
 
         <br><br>
 
-        • यहां “Random” का मतलब यह है कि duty groups
-        को पहले से इस तरह shuffle/rotate किया गया है
-        कि सभी teachers की duty balanced रहे।
+
+        • यहां “Random” का मतलब यह है कि
+        duty groups को पहले से इस तरह
+        shuffle/rotate किया गया है कि
+        सभी teachers की duty balanced रहे।
 
         <br><br>
 
-        • App हर बार नया random result नहीं बनाती।
-        <b>पूरा roster पहले से fixed है</b>, इसलिए
-        सभी teachers के mobile में एक ही दिन
-        एक ही result दिखाई देगा।
+
+        • App हर बार नया random result
+        नहीं बनाती।
+
+        <b>
+          पूरा roster पहले से fixed है।
+        </b>
+
+        इसलिए सभी teachers के mobile में
+        एक ही दिन एक ही result दिखाई देगा।
 
         <br><br>
 
-        • Week की पहचान के लिए किसी database की जरूरत
-        नहीं है। सभी devices में एक ही
-        <b>Week 1 starting date</b> रखी गई है और
-        app आज की तारीख से खुद Week calculate करती है।
+
+        • Week की पहचान के लिए किसी
+        database की जरूरत नहीं है।
+
+        सभी devices में
+        <b>
+          Week 1 की fixed starting date
+          14 September 2026 (Monday)
+        </b>
+        रखी गई है।
 
         <br><br>
 
-        <b>इसलिए किसी को Week याद रखने की जरूरत नहीं है।</b>
-        बस app खोलिए और आज की duty देख लीजिए।
+
+        App आपके मोबाइल की
+        <b>वर्तमान तारीख</b> को इस fixed
+        starting date से compare करके
+        अपने आप calculate करती है कि
+        अभी Week 1 से Week 8 में से
+        कौन सा सप्ताह चल रहा है।
+
+        <br><br>
+
+
+        <b>
+          Week 8 पूरा होने के बाद cycle
+          अपने आप फिर Week 1 से शुरू
+          हो जाता है।
+        </b>
+
+        <br><br>
+
+
+        <b>
+          इसलिए किसी को Week याद रखने
+          की जरूरत नहीं है।
+        </b>
+
+        बस app खोलिए और आज की
+        duty देख लीजिए।
 
       </div>
 
@@ -325,78 +528,64 @@ button:active {
   </div>
 
 
-  <!-- SETUP -->
-  <div class="card">
-
-    <h3 style="margin-top:0;">
-      ⚙️ Setup
-    </h3>
-
-    <div class="small">
-
-      Week 1 जिस सोमवार से शुरू हुआ था,
-      वह तारीख नीचे दी गई है।
-
-      <br>
-
-      Default:
-      <b>14 September 2026</b>
-
-      <br><br>
-
-      अगर भविष्य में roster का Week 1 किसी दूसरी
-      तारीख से शुरू करना हो, तो यहां date बदलकर
-      Save कर सकते हैं।
-
-    </div>
-
-    <label
-      style="display:block;margin-top:12px;font-weight:700;"
-    >
-      Week 1 Start (Monday)
-    </label>
-
-    <input
-      type="date"
-      id="startDate"
-    >
-
-    <button onclick="saveStart()">
-      Save & Refresh
-    </button>
-
-  </div>
-
-
   <!-- HOW IT WORKS -->
+
   <div class="card small">
 
-    <b>🏫 CS SHIKARPUR — कैसे काम करेगा?</b>
+    <b>
+      🏫 CS SHIKARPUR — कैसे काम करेगा?
+    </b>
 
     <br><br>
 
-    App mobile की current date देखकर automatically
-    पता करती है कि अभी कौन सा Week चल रहा है।
+
+    App में
+    <b>
+      14 September 2026 (Monday)
+    </b>
+    को Week 1 की fixed starting date
+    रखी गई है।
 
     <br><br>
+
+
+    App आपके मोबाइल की
+    <b>वर्तमान तारीख</b> को इस fixed
+    starting date से compare करके
+    अपने आप current Week निकालती है।
+
+    <br><br>
+
 
     Week 1 → Week 2 → Week 3 → ... → Week 8
 
-    <br>
+    <br><br>
 
-    Week 8 के बाद फिर Week 1 से cycle शुरू हो जाता है।
+
+    Week 8 पूरा होने के बाद cycle
+    अपने आप फिर Week 1 से शुरू
+    हो जाता है।
 
     <br><br>
 
-    Internet या central database की जरूरत नहीं है।
-    सभी mobile में same starting date और same roster
-    होने के कारण result भी same रहेगा।
+
+    Internet या central database की
+    जरूरत नहीं है।
+
+    सभी mobile में same fixed
+    starting date और same roster
+    होने के कारण सभी को एक ही
+    दिन एक ही duty दिखाई देगी।
 
   </div>
 
 
+  <!-- FOOTER -->
+
   <div class="footer">
+
     CS SHIKARPUR • Opening Duty Roster
+
   </div>
 
 </div>
@@ -406,212 +595,508 @@ button:active {
 
 /* =====================================================
    CS SHIKARPUR
-   OPENING DUTY ROSTER
+   SCHOOL OPENING DUTY ROSTER
    ===================================================== */
+
+
+/* -----------------------------------------------------
+   FIXED WEEK 1 START DATE
+
+   Week 1 starts on:
+   Monday, 14 September 2026
+
+   DO NOT CHANGE THIS unless the entire roster
+   cycle is intentionally restarted.
+   ----------------------------------------------------- */
+
+const WEEK_1_START_DATE = "2026-09-14";
+
+
+/* -----------------------------------------------------
+   TEACHER FULL NAMES
+   ----------------------------------------------------- */
+
+const fullNames = {
+
+  "S.A.":
+    "Sudhir Anand",
+
+  "S.S.":
+    "Sanjay Singh",
+
+  "A.K.M.":
+    "Akhilesh Kumar Maurya",
+
+  "DY":
+    "Dinesh Yadav",
+
+  "A.S.Y.":
+    "Avadhesh Singh Yadav",
+
+  "V.S.":
+    "Vaibhav Srivastava",
+
+  "A.K.":
+    "Anand Kumar",
+
+  "K.K.K.":
+    "Kumari Kamala Kumari"
+
+};
+
+
+/* -----------------------------------------------------
+   8-WEEK DUTY ROSTER
+   ----------------------------------------------------- */
 
 const roster = {
 
+  /* ================= WEEK 1 ================= */
+
   1: {
-    Monday: ["S.A.", "S.S.", "A.K.M."],
-    Tuesday: ["DY", "A.S.Y.", "V.S."],
-    Wednesday: ["A.K.", "K.K.K."],
-    Thursday: ["S.A.", "DY", "A.K."],
-    Friday: ["S.S.", "A.S.Y.", "K.K.K."],
-    Saturday: ["A.K.M.", "V.S."]
+
+    Monday:
+      ["S.A.", "S.S.", "A.K.M."],
+
+    Tuesday:
+      ["DY", "A.S.Y.", "V.S."],
+
+    Wednesday:
+      ["A.K.", "K.K.K."],
+
+    Thursday:
+      ["S.A.", "DY", "A.K."],
+
+    Friday:
+      ["S.S.", "A.S.Y.", "K.K.K."],
+
+    Saturday:
+      ["A.K.M.", "V.S."]
+
   },
+
+
+  /* ================= WEEK 2 ================= */
 
   2: {
-    Monday: ["S.S.", "A.K.M.", "DY"],
-    Tuesday: ["A.S.Y.", "V.S.", "A.K."],
-    Wednesday: ["K.K.K.", "S.A."],
-    Thursday: ["S.S.", "A.S.Y.", "K.K.K."],
-    Friday: ["A.K.M.", "V.S.", "S.A."],
-    Saturday: ["DY", "A.K."]
+
+    Monday:
+      ["S.S.", "A.K.M.", "DY"],
+
+    Tuesday:
+      ["A.S.Y.", "V.S.", "A.K."],
+
+    Wednesday:
+      ["K.K.K.", "S.A."],
+
+    Thursday:
+      ["S.S.", "A.S.Y.", "K.K.K."],
+
+    Friday:
+      ["A.K.M.", "V.S.", "S.A."],
+
+    Saturday:
+      ["DY", "A.K."]
+
   },
+
+
+  /* ================= WEEK 3 ================= */
 
   3: {
-    Monday: ["A.K.M.", "DY", "A.S.Y."],
-    Tuesday: ["V.S.", "A.K.", "K.K.K."],
-    Wednesday: ["S.A.", "S.S."],
-    Thursday: ["A.K.M.", "V.S.", "S.A."],
-    Friday: ["DY", "A.K.", "S.S."],
-    Saturday: ["A.S.Y.", "K.K.K."]
+
+    Monday:
+      ["A.K.M.", "DY", "A.S.Y."],
+
+    Tuesday:
+      ["V.S.", "A.K.", "K.K.K."],
+
+    Wednesday:
+      ["S.A.", "S.S."],
+
+    Thursday:
+      ["A.K.M.", "V.S.", "S.A."],
+
+    Friday:
+      ["DY", "A.K.", "S.S."],
+
+    Saturday:
+      ["A.S.Y.", "K.K.K."]
+
   },
+
+
+  /* ================= WEEK 4 ================= */
 
   4: {
-    Monday: ["DY", "A.S.Y.", "V.S."],
-    Tuesday: ["A.K.", "K.K.K.", "S.A."],
-    Wednesday: ["S.S.", "A.K.M."],
-    Thursday: ["DY", "A.K.", "S.S."],
-    Friday: ["A.S.Y.", "K.K.K.", "A.K.M."],
-    Saturday: ["V.S.", "S.A."]
+
+    Monday:
+      ["DY", "A.S.Y.", "V.S."],
+
+    Tuesday:
+      ["A.K.", "K.K.K.", "S.A."],
+
+    Wednesday:
+      ["S.S.", "A.K.M."],
+
+    Thursday:
+      ["DY", "A.K.", "S.S."],
+
+    Friday:
+      ["A.S.Y.", "K.K.K.", "A.K.M."],
+
+    Saturday:
+      ["V.S.", "S.A."]
+
   },
+
+
+  /* ================= WEEK 5 ================= */
 
   5: {
-    Monday: ["A.S.Y.", "V.S.", "A.K."],
-    Tuesday: ["K.K.K.", "S.A.", "S.S."],
-    Wednesday: ["A.K.M.", "DY"],
-    Thursday: ["A.S.Y.", "K.K.K.", "A.K.M."],
-    Friday: ["V.S.", "S.A.", "DY"],
-    Saturday: ["A.K.", "S.S."]
+
+    Monday:
+      ["A.S.Y.", "V.S.", "A.K."],
+
+    Tuesday:
+      ["K.K.K.", "S.A.", "S.S."],
+
+    Wednesday:
+      ["A.K.M.", "DY"],
+
+    Thursday:
+      ["A.S.Y.", "K.K.K.", "A.K.M."],
+
+    Friday:
+      ["V.S.", "S.A.", "DY"],
+
+    Saturday:
+      ["A.K.", "S.S."]
+
   },
+
+
+  /* ================= WEEK 6 ================= */
 
   6: {
-    Monday: ["V.S.", "A.K.", "K.K.K."],
-    Tuesday: ["S.A.", "S.S.", "A.K.M."],
-    Wednesday: ["DY", "A.S.Y."],
-    Thursday: ["V.S.", "S.A.", "DY"],
-    Friday: ["A.K.", "S.S.", "A.S.Y."],
-    Saturday: ["K.K.K.", "A.K.M."]
+
+    Monday:
+      ["V.S.", "A.K.", "K.K.K."],
+
+    Tuesday:
+      ["S.A.", "S.S.", "A.K.M."],
+
+    Wednesday:
+      ["DY", "A.S.Y."],
+
+    Thursday:
+      ["V.S.", "S.A.", "DY"],
+
+    Friday:
+      ["A.K.", "S.S.", "A.S.Y."],
+
+    Saturday:
+      ["K.K.K.", "A.K.M."]
+
   },
+
+
+  /* ================= WEEK 7 ================= */
 
   7: {
-    Monday: ["A.K.", "K.K.K.", "S.A."],
-    Tuesday: ["S.S.", "A.K.M.", "DY"],
-    Wednesday: ["A.S.Y.", "V.S."],
-    Thursday: ["A.K.", "S.S.", "A.S.Y."],
-    Friday: ["K.K.K.", "A.K.M.", "V.S."],
-    Saturday: ["S.A.", "DY"]
+
+    Monday:
+      ["A.K.", "K.K.K.", "S.A."],
+
+    Tuesday:
+      ["S.S.", "A.K.M.", "DY"],
+
+    Wednesday:
+      ["A.S.Y.", "V.S."],
+
+    Thursday:
+      ["A.K.", "S.S.", "A.S.Y."],
+
+    Friday:
+      ["K.K.K.", "A.K.M.", "V.S."],
+
+    Saturday:
+      ["S.A.", "DY"]
+
   },
 
+
+  /* ================= WEEK 8 ================= */
+
   8: {
-    Monday: ["K.K.K.", "S.A.", "S.S."],
-    Tuesday: ["A.K.M.", "DY", "A.S.Y."],
-    Wednesday: ["V.S.", "A.K."],
-    Thursday: ["K.K.K.", "A.K.M.", "V.S."],
-    Friday: ["S.A.", "DY", "A.K."],
-    Saturday: ["S.S.", "A.S.Y."]
+
+    Monday:
+      ["K.K.K.", "S.A.", "S.S."],
+
+    Tuesday:
+      ["A.K.M.", "DY", "A.S.Y."],
+
+    Wednesday:
+      ["V.S.", "A.K."],
+
+    Thursday:
+      ["K.K.K.", "A.K.M.", "V.S."],
+
+    Friday:
+      ["S.A.", "DY", "A.K."],
+
+    Saturday:
+      ["S.S.", "A.S.Y."]
+
   }
 
 };
 
 
-/* Hindi day names */
+/* -----------------------------------------------------
+   HINDI DAY NAMES
+   ----------------------------------------------------- */
 
 const hiDays = {
-  Monday: "सोमवार",
-  Tuesday: "मंगलवार",
-  Wednesday: "बुधवार",
-  Thursday: "गुरुवार",
-  Friday: "शुक्रवार",
-  Saturday: "शनिवार"
+
+  Monday:
+    "सोमवार",
+
+  Tuesday:
+    "मंगलवार",
+
+  Wednesday:
+    "बुधवार",
+
+  Thursday:
+    "गुरुवार",
+
+  Friday:
+    "शुक्रवार",
+
+  Saturday:
+    "शनिवार"
+
 };
 
 
-/* Convert Date to date without time */
+/* -----------------------------------------------------
+   DATE HELPERS
+   ----------------------------------------------------- */
+
+
+/*
+  Create a date without time component.
+*/
 
 function localDateOnly(date) {
 
   return new Date(
+
     date.getFullYear(),
+
     date.getMonth(),
+
     date.getDate()
+
   );
 
 }
 
 
-/* Convert YYYY-MM-DD to Date */
+/*
+  Convert YYYY-MM-DD to Date.
+*/
 
 function dateFromInput(value) {
 
-  const [year, month, day] = value
-    .split("-")
-    .map(Number);
+  const parts =
+    value.split("-").map(Number);
 
   return new Date(
-    year,
-    month - 1,
-    day
+
+    parts[0],
+
+    parts[1] - 1,
+
+    parts[2]
+
   );
 
 }
 
 
-/* Convert Date to YYYY-MM-DD */
+/*
+  Convert Date to YYYY-MM-DD.
+*/
 
 function iso(date) {
 
   return (
+
     date.getFullYear() +
+
     "-" +
-    String(date.getMonth() + 1).padStart(2, "0") +
+
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0") +
+
     "-" +
-    String(date.getDate()).padStart(2, "0")
+
+    String(
+      date.getDate()
+    ).padStart(2, "0")
+
   );
 
 }
 
 
-/* Get Week 1 starting date */
+/*
+  Fixed Week 1 starting date.
+*/
 
 function getStart() {
 
   return dateFromInput(
-    localStorage.getItem("dutyStart") ||
-    "2026-09-14"
+    WEEK_1_START_DATE
   );
 
 }
 
 
-/* Show / Hide explainer */
+/* -----------------------------------------------------
+   TEACHER TOOLTIP
+   ----------------------------------------------------- */
+
+function teacherChip(name) {
+
+  const fullName =
+    fullNames[name] || name;
+
+
+  return `
+
+    <div
+
+      class="name teacher-chip"
+
+      tabindex="0"
+
+      title="${fullName}"
+
+    >
+
+      ${name}
+
+      <span class="tooltip">
+
+        ${fullName}
+
+      </span>
+
+    </div>
+
+  `;
+
+}
+
+
+/* -----------------------------------------------------
+   EXPLAINER TOGGLE
+   ----------------------------------------------------- */
 
 function toggleExplain() {
 
   const element =
-    document.getElementById("explainer");
+    document.getElementById(
+      "explainer"
+    );
 
-  if (element.style.display === "none") {
 
-    element.style.display = "block";
+  if (
+    element.style.display ===
+    "none" ||
+    element.style.display === ""
+  ) {
+
+    element.style.display =
+      "block";
 
   } else {
 
-    element.style.display = "none";
+    element.style.display =
+      "none";
 
   }
 
 }
 
 
-/* Main calculation */
+/* -----------------------------------------------------
+   MAIN APP CALCULATION
+   ----------------------------------------------------- */
 
 function calculate() {
 
-  const now = new Date();
+  /*
+    Current date according to
+    the user's mobile/device.
+  */
+
+  const now =
+    new Date();
+
 
   const today =
     localDateOnly(now);
+
+
+  /*
+    Fixed Week 1 start.
+  */
 
   const start =
     getStart();
 
 
   /*
-    Difference in days between
-    Week 1 start and today
+    Calculate difference in days.
+
+    Example:
+
+    14 Sep 2026 = Day 0
+    15 Sep 2026 = Day 1
+    21 Sep 2026 = Day 7
   */
 
   const diffDays =
     Math.floor(
-      (today - start) / 86400000
+      (today - start) /
+      86400000
     );
 
 
   /*
     Calculate current week.
-    Week 1 -> Week 8
-    Then repeat.
+
+    Day 0-6   = Week 1
+    Day 7-13  = Week 2
+    ...
+    Day 49-55 = Week 8
   */
 
   let week =
-    Math.floor(diffDays / 7) + 1;
+    Math.floor(
+      diffDays / 7
+    ) + 1;
 
 
   /*
-    If current date is before
-    the configured start date.
+    If device date is before
+    Week 1 starting date,
+    show Week 1.
   */
 
   if (week < 1) {
@@ -622,28 +1107,43 @@ function calculate() {
 
 
   /*
-    Convert any week number
-    into 1-8 cycle.
+    After Week 8,
+    start again from Week 1.
+
+    Example:
+
+    Week 9 -> Week 1
+    Week 10 -> Week 2
   */
 
   week =
     ((week - 1) % 8) + 1;
 
 
-  /* Current day */
+  /*
+    Find today's day.
+  */
 
   const dayIndex =
     today.getDay();
 
 
   const dayNames = [
+
     "Sunday",
+
     "Monday",
+
     "Tuesday",
+
     "Wednesday",
+
     "Thursday",
+
     "Friday",
+
     "Saturday"
+
   ];
 
 
@@ -651,72 +1151,131 @@ function calculate() {
     dayNames[dayIndex];
 
 
-  /* Display date */
+  /*
+    Display date.
+  */
 
-  document.getElementById("date").textContent =
+  document.getElementById(
+    "date"
+  ).textContent =
+
     today.toLocaleDateString(
+
       "hi-IN",
+
       {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
+
+        day:
+          "numeric",
+
+        month:
+          "long",
+
+        year:
+          "numeric"
+
       }
+
     );
 
 
-  /* Display day */
+  /*
+    Display day.
+  */
 
-  document.getElementById("day").textContent =
+  document.getElementById(
+    "day"
+  ).textContent =
+
     dayName === "Sunday"
+
       ? "रविवार"
+
       : hiDays[dayName];
 
 
-  /* Display week */
+  /*
+    Display current week.
+  */
 
-  document.getElementById("week").textContent =
+  document.getElementById(
+    "week"
+  ).textContent =
+
     "Week " + week;
 
 
   /*
-    Today's duty
+    Today's opening duty.
   */
 
-  if (roster[week][dayName]) {
+  if (
+    roster[week][dayName]
+  ) {
 
     const names =
       roster[week][dayName];
 
 
+    /*
+      Display teacher names
+      with full-name tooltips.
+    */
+
     document.getElementById(
       "todayNames"
     ).innerHTML =
+
       names
+
         .map(
           name =>
-            `<div class="name">${name}</div>`
+            teacherChip(name)
         )
+
         .join("");
 
+
+    /*
+      Number of staff.
+    */
 
     document.getElementById(
       "count"
     ).textContent =
+
       names.length +
       " staff की opening duty";
 
+
+    /*
+      Today's message.
+    */
 
     document.getElementById(
       "todayMessage"
     ).innerHTML =
 
-      `<div class="notice">
+      `
+
+      <div class="notice">
+
         आज duty पर:
-        <b>${names.join(", ")}</b>
+
+        <b>
+          ${names.join(", ")}
+        </b>
+
         <br>
+
         कुल ${names.length} staff —
-        कृपया समय से पहले विद्यालय पहुँचें।
-      </div>`;
+
+        कृपया समय से पहले
+        विद्यालय पहुँचें।
+
+      </div>
+
+      `;
 
   } else {
 
@@ -727,14 +1286,22 @@ function calculate() {
     document.getElementById(
       "todayNames"
     ).innerHTML =
-      `<div class="name">
+
+      `
+
+      <div class="name">
+
         आज opening duty नहीं
-      </div>`;
+
+      </div>
+
+      `;
 
 
     document.getElementById(
       "count"
     ).textContent =
+
       "Sunday";
 
 
@@ -742,26 +1309,40 @@ function calculate() {
       "todayMessage"
     ).innerHTML =
 
-      `<div class="notice">
+      `
+
+      <div class="notice">
+
         आज रविवार है।
+
         School opening roster
         Monday–Saturday के लिए है।
-      </div>`;
+
+      </div>
+
+      `;
 
   }
 
 
   /*
-    Weekly roster
+    Display complete weekly roster.
   */
 
   const days = [
+
     "Monday",
+
     "Tuesday",
+
     "Wednesday",
+
     "Thursday",
+
     "Friday",
+
     "Saturday"
+
   ];
 
 
@@ -776,23 +1357,41 @@ function calculate() {
 
     rows +=
 
-      `<div class="row">
+      `
+
+      <div class="row">
 
         <div>
+
           <div class="day">
+
             ${hiDays[day]}
+
           </div>
 
           <div class="small">
+
             ${staff.length} staff
+
           </div>
+
         </div>
+
 
         <div class="staff">
-          ${staff.join(" · ")}
+
+          ${staff
+            .map(
+              name =>
+                teacherChip(name)
+            )
+            .join("")}
+
         </div>
 
-      </div>`;
+      </div>
+
+      `;
 
   });
 
@@ -801,70 +1400,28 @@ function calculate() {
     "weekRoster"
   ).innerHTML = rows;
 
-
-  /*
-    Show current Week 1 start date
-  */
-
-  document.getElementById(
-    "startDate"
-  ).value =
-    iso(start);
-
 }
 
 
-/* Save starting date */
-
-function saveStart() {
-
-  const value =
-    document.getElementById(
-      "startDate"
-    ).value;
-
-
-  if (!value) {
-
-    return;
-
-  }
-
-
-  /*
-    Make sure selected date
-    is Monday.
-  */
-
-  const selected =
-    dateFromInput(value);
-
-
-  if (selected.getDay() !== 1) {
-
-    alert(
-      "कृपया Week 1 की starting date सोमवार की ही चुनें।"
-    );
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "dutyStart",
-    value
-  );
-
-
-  calculate();
-
-}
-
-
-/* Start app */
+/* -----------------------------------------------------
+   START APPLICATION
+   ----------------------------------------------------- */
 
 calculate();
+
+
+/*
+  Optional refresh every minute.
+
+  This is useful if someone keeps the app
+  open across midnight. It does not require
+  any database or internet connection.
+*/
+
+setInterval(
+  calculate,
+  60000
+);
 
 </script>
 
